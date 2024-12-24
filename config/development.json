@@ -1,0 +1,13 @@
+{
+  "PORT": 3300,
+  "MONGODB_URI": "mongodb://localhost:27017/fileManagementServer",
+  "JWT_SECRET": "myprivatekey231321564woiuyyy736322312999999",
+  "ALLOWED_FILE_FORMATS": [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/svg",
+    "application/pdf"
+  ],
+  "MAX_FILE_SIZE": 5242880
+}
