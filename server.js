@@ -1,10 +1,16 @@
 const express = require("express");
 const config = require("config");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
 const fileRoute = require("./routes/file.route");
 const { accessLogger, errorLogger } = require("./middleware/logger");
+const swaggerDocument = require("./swagger-output.json")
 
 const app = express();
 const PORT = config.get("PORT");
+
+// Default CORS (allow all origins)
+app.use(cors());
 
 // Database configuration
 require("./utils/database");
@@ -16,18 +22,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(errorLogger);
 app.use(accessLogger);
 
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 app.use("/api", fileRoute);
+
+// API DOCUMENTATION
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 process.on("unhandledRejection", (exc) => {
   console.error("unhandledRejection: ", exc.message);
-  // throw exc;
 });
 
 process.on("uncaughtException", (exc) => {
   console.error("uncaughtException: ", exc.message);
-  // setTimeout(() => {
-  //   process.exit(1);
-  // }, 1000);
 });
 
 // Start server
